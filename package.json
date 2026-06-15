@@ -1,0 +1,34 @@
+{
+  "name": "hotsearch",
+  "version": "1.0.0",
+  "description": "hotsearch server",
+  "main": "script/server.js",
+  "bin": "script/server.js",
+  "scripts": {
+    "build": "pkg . --targets node20-win-x64 --output build/hotsearch-cmd.exe && create-nodew-exe build/hotsearch-cmd.exe build/hotsearch.exe",
+    "start": "node script/server.js"
+  },
+  "pkg": {
+    "assets": [
+      "admin/**/*",
+      "public/**/*",
+      "node_modules/sqlite3/build/Release/*.node"
+    ]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "better-sqlite3": "^12.10.0",
+    "connect-sqlite3": "^0.9.16",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.5.2",
+    "express-session": "^1.19.0",
+    "resend": "^6.12.4",
+    "sqlite3": "^6.0.1",
+    "winston": "^3.19.0"
+  }
+}

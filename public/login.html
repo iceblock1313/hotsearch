@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>HotSearch｜登录验证</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" type="image/png" href="./icon_login.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f5f7fc 0%, #eef2f8 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            padding: 1.5rem;
+        }
+
+        /* 主卡片容器 */
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(2px);
+            border-radius: 2rem;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+            padding: 2rem 1.5rem 2rem 1.5rem;
+            width: 100%;
+            max-width: 460px;
+            transition: all 0.2s ease;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #1e2b3c, #2c4f6e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.3px;
+        }
+
+        .sub {
+            color: #5b6f82;
+            font-size: 0.9rem;
+            margin-bottom: 0;
+            border-bottom: 1px solid #e2e8f0;
+            display: inline-block;
+            padding-bottom: 6px;
+        }
+
+        .flexbox {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            width: 100%;
+            margin: 1rem 0 1rem;
+            flex-wrap: nowrap;
+            gap: 8px;
+        }
+
+        .flexbox p {
+            padding: 0.8rem 1.2rem;
+            flex-shrink: 0;
+            text-wrap: nowrap;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            color: #1f3a4b;
+            background: #f0f4fa;
+            border-radius: 60px;
+            font-size: 1rem;
+            margin: 0;
+            backdrop-filter: blur(2px);
+        }
+
+        input {
+            border: 2px solid #dce5ef;
+            border-radius: 60px;
+            padding: 0.8rem 1.2rem;
+            font-size: 1rem;
+            flex: 1;
+            outline: none;
+            background-color: white;
+            transition: all 0.2s ease-in-out;
+            font-family: inherit;
+            color: #1f2f3c;
+        }
+
+        input::placeholder {
+            color: #a5bbd0;
+            font-weight: 400;
+        }
+
+        /* 让错误提示中的换行生效 */
+        #errorText {
+            white-space: pre-wrap;
+        }
+
+        /* 🌟 新的聚焦样式 —— 柔和青紫光晕 + 深色边框 */
+        input:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.25);
+            background-color: #fefcff;
+        }
+
+        button {
+            text-wrap: nowrap;
+            background: linear-gradient(105deg, #2c3f55 0%, #1f2f40 100%);
+            border: none;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 60px;
+            width: 80%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            letter-spacing: 0.3px;
+            margin-top: 0.5rem;
+        }
+
+        button:hover {
+            background: linear-gradient(105deg, #3e5570, #253a4e);
+            transform: scale(1.01);
+            box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* 优雅的小点缀 */
+        .footer-tip {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #7c8f9e;
+            margin-top: 1.8rem;
+            border-top: 1px solid #e9edf2;
+            padding-top: 1.2rem;
+        }
+    </style>
+    <style>
+        .icon {
+            width: 1em;
+            height: 1em;
+            vertical-align: -0.15em;
+            fill: currentColor;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h2 class="center">欢迎回来！</h2>
+        <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-denglu"></use>
+        </svg>
+        <span class="sub">请登录您的HotSearch校园账号</span>
+        <form id="loginform" method="POST" action="/login">
+            <div class="flexbox">
+                <p>QQ号</p>
+                <input type="text" name="qq" placeholder="请输入QQ号">
+            </div>
+            <div class="flexbox">
+                <p>密码</p>
+                <input type="password" name="password" placeholder="请输入密码">
+            </div>
+            <small id="errorMsg" style="color: red;display:none;text-align: center;">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-gantanhao"></use>
+                </svg>
+                <span id="errorText">
+                    错误提示信息
+                </span>
+            </small>
+            <div style="display: flex; justify-content: center;">
+                <button type="submit">登录 →</button>
+            </div>
+        </form>
+        <div class="footer-tip">
+            为了确保安全，我们需要进行必要的验证<br>谢谢您的支持！(*¯︶¯*)
+        </div>
+    </div>
+    <script>
+        const errorMsg = document.getElementById("errorMsg")
+        const errorText = document.getElementById("errorText")
+        const loginform = document.getElementById("loginform")
+        const submitButton = document.querySelector("button[type='submit']")
+        loginform.addEventListener("submit", async (e) => {
+            e.preventDefault()
+            const qqinput = document.querySelector("input[name=qq]")
+            const pswinput = document.querySelector("input[name=password]")
+            const qq = qqinput.value.trim()
+            const password = pswinput.value
+            if (typeof qq !== "string" || !qq) {
+                errorText.textContent = '请填写您的QQ号'
+                errorMsg.style.display = 'block'
+                qqinput.focus()
+                return
+            }
+            if (typeof password !== "string" || !password) {
+                errorText.textContent = '请填写您的密码'
+                errorMsg.style.display = "block"
+                pswinput.focus()
+                return
+            }
+            if (!/^[1-9][0-9]{4,10}$/.test(qq)) {
+                errorText.textContent = '您填写的QQ号无效'
+                errorMsg.style.display = "block"
+                return
+            }
+            if (password.length < 8 || password.length > 30) {
+                errorText.textContent = '您填写的密码无效'
+                errorMsg.style.display = "block"
+                return
+            }
+            errorMsg.style.display = 'none'
+            // 构造表单格式的请求体
+            const formData = new URLSearchParams();
+            formData.append('qq', qq);
+            formData.append('password', password);
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: formData
+                });
+                if (response.ok) {
+                    // 登录成功，后端已设置 session，直接跳转
+                    window.location.href = '/';
+                } else {
+                    // 处理错误（密码错误等情况）
+                    const responseText = await response.json();
+                    errorText.textContent = responseText.message || '登录失败';
+                    errorMsg.style.display = 'block';
+                }
+            } catch (err) {
+                console.error(err);
+                if (err instanceof TypeError) {
+                    errorText.textContent = '无法连接服务器，请检查网络后重试';
+                    errorMsg.style.display = 'block';
+
+                } else {
+                    errorText.textContent = '发生了意外错误：' + err.message + "\n您可以截屏此页面提交给管理员";
+                    errorMsg.style.display = 'block';
+                }
+            }
+        });
+    </script>
+    <script src="../font/iconfont.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,23 @@
+{
+  "id": "5191751",
+  "name": "r esou",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1312041",
+      "name": "登录",
+      "font_class": "denglu",
+      "unicode": "e612",
+      "unicode_decimal": 58898
+    },
+    {
+      "icon_id": "8620351",
+      "name": "感叹号",
+      "font_class": "gantanhao",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    }
+  ]
+}

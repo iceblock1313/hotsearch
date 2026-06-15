@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>班级热点管理</title>
+    <style>
+        body { font-family: sans-serif; margin: 2rem; }
+        ul { list-style: none; padding: 0; }
+        li { margin-bottom: 0.5rem; padding: 0.5rem; background: #f0f0f0; border-radius: 4px; }
+        button { margin-left: 1rem; }
+        .form-group { margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+    <h2>班级热点列表</h2>
+    <ul id="hotspot-list">加载中...</ul>
+    <hr>
+    <h3>添加新热点</h3>
+    <form id="add-form">
+        <input type="text" id="new-hotspot" required style="width: 300px;">
+        <button type="submit">添加</button>
+    </form>
+    <p><a href="/logout">登出</a></p>
+
+    <script>
+        async function refreshList() {
+            const res = await fetch('/api/hotspots');
+            if (res.status === 401) {
+                window.location.href = '/';
+                return;
+            }
+            const data = await res.json();
+            const ul = document.getElementById('hotspot-list');
+            if (data.length === 0) {
+                ul.innerHTML = '<li>暂无热点</li>';
+                return;
+            }
+            ul.innerHTML = data.map((text, idx) => `
+                <li id="hotspot-${idx}">
+                    ${escapeHtml(text)}
+                    <button onclick="editHotspot(${idx})">编辑</button>
+                    <button onclick="deleteHotspot(${idx})">删除</button>
+                </li>
+            `).join('');
+        }
+
+        async function editHotspot(index) {
+            const newText = prompt('输入新的热点内容:');
+            if (newText === null) return;
+            const res = await fetch('/api/hotspots/' + index, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: newText })
+            });
+            if (res.ok) refreshList();
+            else alert('修改失败');
+        }
+
+        async function deleteHotspot(index) {
+            if (!confirm('确定删除？')) return;
+            const res = await fetch('/api/hotspots/' + index, { method: 'DELETE' });
+            if (res.ok) refreshList();
+            else alert('删除失败');
+        }
+
+        document.getElementById('add-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const input = document.getElementById('new-hotspot');
+            const text = input.value.trim();
+            if (!text) return;
+            const res = await fetch('/api/hotspots', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text })
+            });
+            if (res.ok) {
+                input.value = '';
+                refreshList();
+            } else {
+                alert('添加失败');
+            }
+        });
+
+        function escapeHtml(str) {
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        refreshList();
+    </script>
+</body>
+</html>
