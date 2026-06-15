@@ -11,4 +11,4 @@
 未来将会移植所有功能推出classisland插件！（敬请期待）
 （其实是在学c#）
 ## 本项目得到了一位用户的star
-![鲨鱼发送的star](images/star.png)
+![鲨鱼发送的star](https://github.com/iceblock1313/hotsearch/raw/main/images/star.png?raw=true)
